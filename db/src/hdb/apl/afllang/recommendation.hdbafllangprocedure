@@ -1,0 +1,18 @@
+{
+  "area" : "APL_AREA",
+  "function" : "CREATE_RECO_MODEL_AND_TRAIN",
+  "parameters" : [
+    {"direction" : "IN",  "type" : "jku.movielens.db.hdb.apl::recommendation.tt_function_header"},
+    {"direction" : "IN",  "type" : "jku.movielens.db.hdb.apl::recommendation.tt_operation_config"},
+    {"direction" : "IN",  "type" : "jku.movielens.db.hdb.apl::recommendation.tt_variable_descs"},
+    {"direction" : "IN",  "type" : "jku.movielens.db.hdb.apl::recommendation.tt_movielens_dataset"},
+    {"direction" : "OUT", "type" : "jku.movielens.db.hdb.apl::recommendation.tt_model"},
+    {"direction" : "OUT", "type" : "jku.movielens.db.hdb.apl::recommendation.tt_model_node_user"},
+    {"direction" : "OUT", "type" : "jku.movielens.db.hdb.apl::recommendation.tt_model_node_movie"},
+    {"direction" : "OUT", "type" : "jku.movielens.db.hdb.apl::recommendation.tt_model_links"},
+    {"direction" : "OUT", "type" : "jku.movielens.db.hdb.apl::recommendation.tt_operation_log"},
+    {"direction" : "OUT", "type" : "jku.movielens.db.hdb.apl::recommendation.tt_summary"},
+    {"direction" : "OUT", "type" : "jku.movielens.db.hdb.apl::recommendation.tt_indicators"},
+    {"direction" : "OUT", "type" : "jku.movielens.db.hdb.apl::recommendation.tt_model_sql_code"}
+  ]
+}
