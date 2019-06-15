@@ -1,0 +1,8 @@
+COLUMN TABLE "jku.movielens.db.data::movies"(
+    "MOVIEID" INTEGER CS_INT NOT NULL,
+    "TITLE"   VARCHAR(255),
+    "GENRES"  VARCHAR(255),
+    PRIMARY KEY (
+        "MOVIEID"
+    )
+);

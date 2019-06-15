@@ -1,0 +1,9 @@
+COLUMN TABLE "jku.movielens.db.data::tags"(
+    "USERID"     INTEGER CS_INT NOT NULL,
+    "MOVIEID"    INTEGER CS_INT NOT NULL,
+    "TAG"        VARCHAR(255) NOT NULL,
+    "TIMESTAMP"  INTEGER,
+    PRIMARY KEY (
+        "USERID", "MOVIEID", "TAG"
+    )
+);
