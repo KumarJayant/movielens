@@ -1,0 +1,12 @@
+service {
+  // expose the model result views
+  "jku.movielens.db.hdb.apl.views::recommendation_collaborative"  as "apl_recommendation_collaborative" key ("USERID" , "RANK");
+  "jku.movielens.db.hdb.apl.views::recommendation_contentbased"   as "apl_recommendation_contentbased"  key ("MOVIEID", "RANK");
+  "jku.movielens.db.hdb.pal.views::apriori_collaborative"         as "pal_apriori_collaborative"        key ("USERID" , "RANK");
+  "jku.movielens.db.hdb.pal.views::apriori_contentbased"          as "pal_apriori_contentbased"         key ("MOVIEID", "RANK");
+
+  // expose the summary user and movie views
+  "jku.movielens.db.hdb.summary::ratings_user"       as "ratings_user"     key ("USERID");
+  "jku.movielens.db.hdb.summary::ratings_movie"      as "ratings_movie"    key ("MOVIEID");
+  "jku.movielens.db.hdb.summary::ratings_detailed"   as "ratings_detailed" key ("USERID", "MOVIEID");
+}
