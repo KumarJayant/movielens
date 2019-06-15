@@ -1,0 +1,27 @@
+PROCEDURE "jku.movielens.db.hdb.pal.procedures::apriori_result_contentbased" (
+    in MovieId   integer default -1
+   ,in KeepTopN  integer default 5
+   ,out results  "jku.movielens.db.hdb.pal::apriori.tt_movielens_contentbased_result"
+)
+LANGUAGE SQLSCRIPT SQL SECURITY INVOKER AS
+BEGIN
+    results = select
+    t1.movieid, rank, similar_movie, score, title, genres, imdbid, tmdbid    
+  from (
+    select
+        t1.movieid
+      , row_number() over(partition by t1.movieid order by t1.score desc, t1.consequent desc ) as rank
+      , cast(t1.consequent as integer) as similar_movie
+      , t1.score
+    from (
+      select movieid, rules.postrule as consequent, rules.confidence as score
+      from "jku.movielens.db.data::movies" as input_data
+      left outer join "jku.movielens.db.hdb.pal::apriori.rules" rules on (cast (input_data.movieid as varchar(500)) = rules.prerule)
+      where rules.postrule is not null
+      and   input_data.movieid = :MovieId
+    ) t1
+  ) t1
+  left outer join "jku.movielens.db.data::movies" movies on movies.movieid = t1.similar_movie
+  left outer join "jku.movielens.db.data::links"  links  on links.movieid  = t1.similar_movie
+  where t1.rank <= :KeepTopN;
+END;

@@ -1,0 +1,67 @@
+PROCEDURE "jku.movielens.db.hdb.apl.procedures::recommendation_execute" (
+   in BestSellerThreshold    integer default 50000,
+   in MaxTopNodes            integer default 100000,
+   in MinimumConfidence      double  default 0.05,
+   in MinimumPredictivePower double  default null,
+   in MinimumSupport         integer default 2,
+   out operation_log  "jku.movielens.db.hdb.apl::recommendation.tt_operation_log",
+   out summary        "jku.movielens.db.hdb.apl::recommendation.tt_summary",
+   out indicators     "jku.movielens.db.hdb.apl::recommendation.tt_indicators",
+   out model_sql_code "jku.movielens.db.hdb.apl::recommendation.tt_model_sql_code"
+)
+LANGUAGE SQLSCRIPT SQL SECURITY INVOKER AS
+BEGIN
+    -- Insert operation parameters
+    truncate table "jku.movielens.db.hdb.apl::recommendation.function_header";
+    function_header = select * from "jku.movielens.db.hdb.apl::recommendation.function_header";                                 
+
+    truncate table "jku.movielens.db.hdb.apl::recommendation.operation_config";
+    if :BestSellerThreshold     is not null then insert into "jku.movielens.db.hdb.apl::recommendation.operation_config" values ('APL/BestSeller'             , cast(:BestSellerThreshold    as varchar));   end if;
+    if :MaxTopNodes             is not null then insert into "jku.movielens.db.hdb.apl::recommendation.operation_config" values ('APL/MaxTopNodes'            , cast(:MaxTopNodes            as varchar));   end if;
+    if :MinimumConfidence       is not null then insert into "jku.movielens.db.hdb.apl::recommendation.operation_config" values ('APL/MinimumConfidence'      , cast(:MinimumConfidence      as varchar));   end if;
+    if :MinimumPredictivePower  is not null then insert into "jku.movielens.db.hdb.apl::recommendation.operation_config" values ('APL/MinimumPredictivePower' , cast(:MinimumPredictivePower as varchar));   end if;
+    if :MinimumSupport          is not null then insert into "jku.movielens.db.hdb.apl::recommendation.operation_config" values ('APL/MinimumSupport'         , cast(:MinimumSupport         as varchar));   end if;
+    insert into "jku.movielens.db.hdb.apl::recommendation.operation_config" values ('APL/ModelType'  , 'recommendation'  );
+    insert into "jku.movielens.db.hdb.apl::recommendation.operation_config" values ('APL/User'       , 'USERID'          ); -- mandatory
+    insert into "jku.movielens.db.hdb.apl::recommendation.operation_config" values ('APL/Item'       , 'MOVIEID'         ); -- mandatory
+    insert into "jku.movielens.db.hdb.apl::recommendation.operation_config" values ('APL/RuleWeight' , 'Support'         );
+    operation_config = select * from "jku.movielens.db.hdb.apl::recommendation.operation_config";       
+
+    truncate table "jku.movielens.db.hdb.apl::recommendation.variable_descs";
+    variable_descs = select * from "jku.movielens.db.hdb.apl::recommendation.variable_descs";                                   
+
+    movielens_dataset = select * from "jku.movielens.db.data::ratings";           
+    call "jku.movielens.db.hdb.apl.afllang::recommendation"(
+        :function_header,
+        :operation_config,
+        :variable_descs,
+        :movielens_dataset,
+        :model,
+        :model_node_user,
+        :model_node_movie,
+        :model_links,
+        :operation_log,
+        :summary,
+        :indicators,
+        :model_sql_code
+    );
+    -- Clear tables content
+    truncate table "jku.movielens.db.hdb.apl::recommendation.model";
+    truncate table "jku.movielens.db.hdb.apl::recommendation.model_node_user";
+    truncate table "jku.movielens.db.hdb.apl::recommendation.model_node_movie";
+    truncate table "jku.movielens.db.hdb.apl::recommendation.model_links";
+    truncate table "jku.movielens.db.hdb.apl::recommendation.operation_log";
+    truncate table "jku.movielens.db.hdb.apl::recommendation.summary";
+    truncate table "jku.movielens.db.hdb.apl::recommendation.indicators";    
+    truncate table "jku.movielens.db.hdb.apl::recommendation.model_sql_code";
+
+    -- Insert the results
+    insert into "jku.movielens.db.hdb.apl::recommendation.model"            select * from :model;
+    insert into "jku.movielens.db.hdb.apl::recommendation.model_node_user"  select * from :model_node_user;
+    insert into "jku.movielens.db.hdb.apl::recommendation.model_node_movie" select * from :model_node_movie;
+    insert into "jku.movielens.db.hdb.apl::recommendation.model_links"      select * from :model_links;
+    insert into "jku.movielens.db.hdb.apl::recommendation.operation_log"    select * from :operation_log;
+    insert into "jku.movielens.db.hdb.apl::recommendation.summary"          select * from :summary;
+    insert into "jku.movielens.db.hdb.apl::recommendation.indicators"       select * from :indicators;        
+    insert into "jku.movielens.db.hdb.apl::recommendation.model_sql_code"   select * from :model_sql_code;
+END;

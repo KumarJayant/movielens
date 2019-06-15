@@ -1,0 +1,78 @@
+namespace jku.movielens.db.hdb.pal;
+
+using "jku.movielens.db.data::ratings" as ratings;
+
+context apriori {
+    entity parameter {
+        PARAM_NAME   : String(100);
+        INT_VALUE    : Integer;
+        DOUBLE_VALUE : Double;
+        STRING_VALUE : String(100);
+    };
+
+    table type tt_parameter {
+        PARAM_NAME   : String(100);
+        INT_VALUE    : Integer;
+        DOUBLE_VALUE : Double;
+        STRING_VALUE : String(100);
+    };
+
+    entity rules {
+        PRERULE    : String(500);
+        POSTRULE   : String(500);
+        SUPPORT    : Double;
+        CONFIDENCE : Double;
+        LIFT       : Double;
+    };
+
+    table type tt_rules {
+        PRERULE    : String(500);
+        POSTRULE   : String(500);
+        SUPPORT    : Double;
+        CONFIDENCE : Double;
+        LIFT       : Double;
+    };
+
+    entity pmml {
+        ID        : Integer;
+        PMMLMODEL : String(5000);
+    };
+
+    table type tt_pmml {
+        ID        : Integer;
+        PMMLMODEL : String(5000);
+    };
+
+    view movielens_dataset as
+        select from ratings
+        {
+            USERID,
+            MOVIEID
+        };
+
+    table type tt_movielens_dataset {
+        USERID  : Integer;
+        MOVIEID : Integer;
+    };
+
+    table type tt_movielens_collaborative_result {
+        USERID  : Integer;
+        RANK    : Integer;
+        MOVIEID : Integer;
+        SCORE   : Double;
+        TITLE   : String(255);
+        GENRES  : String(255);
+        IMDBID  : Integer;
+        TMDBID  : Integer;
+    };
+    table type tt_movielens_contentbased_result {
+        MOVIEID       : Integer;
+        RANK          : Integer;
+        SIMILAR_MOVIE : Integer;
+        SCORE         : Double;
+        TITLE         : String(255);
+        GENRES        : String(255);
+        IMDBID        : Integer;
+        TMDBID        : Integer;
+    };
+};

@@ -1,0 +1,23 @@
+view "jku.movielens.db.hdb.pal.views::apriori_collaborative" as
+select
+  userid, rank, t1.movieid, score, title, genres, imdbid, tmdbid
+from (
+  select
+      t1.userid
+    , row_number() over(partition by t1.userid order by t1.score desc, t1.consequent desc ) as rank
+    , cast(t1.consequent as integer) as movieid
+    , t1.score
+  from (
+    select
+      input_data.userid,
+      rules.postrule as consequent,
+      max(rules.confidence) as score
+    from "jku.movielens.db.data::ratings" as input_data
+    left outer join "jku.movielens.db.hdb.pal::apriori.rules" rules on (cast (input_data.movieid as varchar(500)) = rules.prerule)
+    where rules.postrule is not null
+    group by input_data.userid, rules.postrule
+  ) t1
+) t1
+left outer join "jku.movielens.db.data::movies" movies on movies.movieid = t1.movieid
+left outer join "jku.movielens.db.data::links"  links  on links.movieid  = t1.movieid
+where t1.rank <= 5;

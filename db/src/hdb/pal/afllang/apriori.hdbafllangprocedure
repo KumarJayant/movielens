@@ -1,0 +1,10 @@
+{
+    "area" : "AFLPAL",
+    "function" : "APRIORIRULE",
+    "parameters" : [
+        { "direction" : "IN",  "type" : "jku.movielens.db.hdb.pal::apriori.tt_movielens_dataset"},
+        { "direction" : "IN",  "type" : "jku.movielens.db.hdb.pal::apriori.tt_parameter"},
+        { "direction" : "OUT", "type" : "jku.movielens.db.hdb.pal::apriori.tt_rules"},
+        { "direction" : "OUT", "type" : "jku.movielens.db.hdb.pal::apriori.tt_pmml"}
+    ]
+}
