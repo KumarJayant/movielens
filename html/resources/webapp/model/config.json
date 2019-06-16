@@ -1,0 +1,47 @@
+{
+  "services": {
+    "apl_recommendation": {
+      "execute": {
+        "url": "/xsjs/apl/recommendation_execute.xsjs",
+        "method": "POST",
+        "data": {
+          "BESTSELLERTHRESHOLD": 50000,
+          "MAXTOPNODES": 100000,
+          "MINIMUMSUPPORT": 2,
+          "MINIMUMCONFIDENCE": 0.05,
+          "MINIMUMPREDICTIVEPOWER": 0.1
+        }
+      },
+      "results": {
+        "url": "/xsjs/apl/recommendation_results.xsjs",
+        "method": "POST",
+        "data": {
+          "BESTSELLERTHRESHOLD": 50000,
+          "MAXTOPNODES": 100000,
+          "KEEPTOPN": 5,
+          "INCLUDEBESTSELLERS": false,
+          "SKIPALREADYOWNED": true
+        }
+      }
+    },
+    "pal_apriori": {
+      "execute": {
+        "url": "/xsjs/pal/apriori_execute.xsjs",
+        "method": "POST",
+        "data": {
+          "MIN_SUPPORT": 0.1,
+          "MIN_CONFIDENCE": 0.1,
+          "MIN_LIFT": 0.0,
+          "UBIQUITOUS": 1.0
+        }
+      },
+      "results": {
+        "url": "/xsjs/pal/apriori_results.xsjs",
+        "method": "POST",
+        "data": {
+          "KEEPTOPN": 5
+        }
+      }
+    }
+  }
+}

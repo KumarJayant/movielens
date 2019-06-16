@@ -1,0 +1,82 @@
+<mvc:View xmlns:html="http://www.w3.org/2000/xhtml" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:ui="sap.ui"
+  xmlns:form="sap.ui.layout.form" xmlns:table="sap.ui.table" xmlns:core="sap.ui.core"
+  xmlns:custom="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1" controllerName="movielens.html.controller.xsodata.results">
+  <Page showHeader="false">
+    <content>
+      <Bar>
+        <contentMiddle>
+          <Title text="Collaborative Filtering Result from XS OData services"/>
+        </contentMiddle>
+        <contentLeft>
+          <Button icon="sap-icon://menu" press="handlePressOpenMenu"/>
+        </contentLeft>
+      </Bar>
+      <Panel expandable="false" headerText="Search Users">
+        <Input width="100%" showSuggestion="true" suggest="onSuggestionSuggest" submit="onSuggestionSubmit"
+          suggestionItemSelected="onSuggestionItemSelected" custom:type="user" id="user_input" placeholder="Enter a user identifier..."
+          suggestionItems="{ path: 'odata>/ratings_user', filters: [ { path: 'USERID', operator: 'EQ', value1: '-1' } ]}">
+          <suggestionItems>
+            <core:ListItem key="{odata>USERID}" text="{odata>USERID}" additionalText="Rating count : {odata>RATING_COUNT}"/>
+          </suggestionItems>
+        </Input>
+      </Panel>
+      <Panel expandable="false" visible="{= !!${/selectedItemId}}">
+        <ScrollContainer height="100%" width="100%" horizontal="true" vertical="true" focusable="true">
+          <Panel expandable="true" expanded="true" headerText="Details">
+            <form:Form editable="false" class="isReadonly" width="100%">
+              <form:layout>
+                <form:ResponsiveGridLayout/>
+              </form:layout>
+              <form:formContainers>
+                <form:FormContainer>
+                  <form:formElements>
+                    <form:FormElement label="User ID">
+                      <form:fields>
+                        <Text text="{/selectedItem/USERID}"/>
+                      </form:fields>
+                    </form:FormElement>
+                    <form:FormElement label="Total rating">
+                      <form:fields>
+                        <Text text="{/selectedItem/RATING_COUNT}"/>
+                      </form:fields>
+                    </form:FormElement>
+                    <form:FormElement label="Average note">
+                      <form:fields>
+                        <Text text="{path : '/selectedItem/RATING_AVG', formatter : '.formatter.formatNumber'}"/>
+                      </form:fields>
+                    </form:FormElement>
+                  </form:formElements>
+                </form:FormContainer>
+                <form:FormContainer>
+                  <form:formElements>
+                    <form:FormElement label="Last rating">
+                      <form:fields>
+                        <Text text="{path : '/selectedItem/LAST_RATING_DATE', formatter : '.formatter.formatEpoch'}"/>
+                      </form:fields>
+                    </form:FormElement>
+                    <form:FormElement label="Last note">
+                      <form:fields>
+                        <Text text="{/selectedItem/LAST_RATING}"/>
+                      </form:fields>
+                    </form:FormElement>
+                    <form:FormElement label="Last rated movie id">
+                      <form:fields>
+                        <Text text="{/selectedItem/LAST_MOVIEID}"/>
+                      </form:fields>
+                    </form:FormElement>
+                  </form:formElements>
+                </form:FormContainer>
+              </form:formContainers>
+            </form:Form>
+          </Panel>
+          <Panel expandable="true" expanded="true" headerText="Last Ratings">
+            <ui:core.Fragment fragmentName="movielens.html.fragment.xsodata.ratings_detailed" type="XML"/>
+          </Panel>
+          <Panel expandable="true" expanded="true" headerText="Results">
+            <ui:core.Fragment fragmentName="movielens.html.fragment.xsodata.collaborative" type="XML"/>
+          </Panel>
+        </ScrollContainer>
+      </Panel>
+    </content>
+  </Page>
+</mvc:View>

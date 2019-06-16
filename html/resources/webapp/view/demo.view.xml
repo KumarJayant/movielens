@@ -1,0 +1,16 @@
+<mvc:View xmlns:html="http://www.w3.org/1999/xhtml" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="movielens.html.controller.demo" displayBlock="true">
+  <App id="idAppControl">
+    <Page showHeader="false">
+      <content>
+        <Bar>
+          <contentMiddle>
+            <Title text="MovieLens Recommendation"/>
+          </contentMiddle>
+          <contentLeft>
+            <Button icon="sap-icon://menu" press="handlePressOpenMenu"/>
+          </contentLeft>
+        </Bar>
+      </content>
+    </Page>
+  </App>
+</mvc:View>

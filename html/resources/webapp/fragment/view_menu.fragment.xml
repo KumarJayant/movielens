@@ -1,0 +1,17 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core"
+  xmlns:custom="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1" xmlns:u="sap.ui.unified">
+  <u:Menu itemSelect="handleMenuItemPress">
+    <u:MenuItem text="View Results with XS OData">
+      <u:Menu>
+        <u:MenuItem text="Collaborative Filtering" custom:to="xsodata.collaborative"/>
+        <u:MenuItem text="Content-Based Filtering" custom:to="xsodata.contentbased"/>
+      </u:Menu>
+    </u:MenuItem>
+    <u:MenuItem text="Execute Algorithms with XSJS">
+      <u:Menu>
+        <u:MenuItem text="APL Recommendation" custom:to="xsjs.apl_recommendation"/>
+        <u:MenuItem text="PAL APRIORI" custom:to="xsjs.pal_apriori"/>
+      </u:Menu>
+    </u:MenuItem>
+  </u:Menu>
+</core:FragmentDefinition>
