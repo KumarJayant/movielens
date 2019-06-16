@@ -1,0 +1,24 @@
+<mvc:View xmlns:html="http://www.w3.org/2000/xhtml" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:ui="sap.ui"
+  controllerName="movielens.html.controller.xsjs.execute">
+  <Page showHeader="false" icon="sap-icon://menu" id="master">
+    <content>
+      <Bar>
+        <contentMiddle>
+          <Title text="Execute The APL Recommendation Algorithm"/>
+        </contentMiddle>
+        <contentLeft>
+          <Button icon="sap-icon://menu" press="handlePressOpenMenu"/>
+        </contentLeft>
+      </Bar>
+      <Panel expandable="true" expanded="true" headerText="Algorithm Execution Parameters">
+        <ui:core.Fragment fragmentName="movielens.html.fragment.xsjs.apl_recommendation_execute" type="XML"/>
+      </Panel>
+      <Panel expandable="true" headerText="Collaborative Filtering Result">
+        <ui:core.Fragment fragmentName="movielens.html.fragment.xsjs.apl_recommendation_result_collaborative" type="XML"/>
+      </Panel>
+      <Panel expandable="true" headerText="Content-Based Filtering Result">
+        <ui:core.Fragment fragmentName="movielens.html.fragment.xsjs.apl_recommendation_result_contentbased" type="XML"/>
+      </Panel>
+    </content>
+  </Page>
+</mvc:View>

@@ -1,0 +1,39 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:ui="sap.ui">
+  <ui:table.Table selectionMode="None" visibleRowCount="5" enableBusyIndicator="true" rows="{ path: 'results>/items'}">
+    <ui:columns>
+      <ui:table.Column sortProperty="SIMILAR_MOVIE" width="10%">
+        <Label text="Similar Movie ID"/>
+        <ui:template>
+          <Text text="{results>SIMILAR_MOVIE}" wrapping="false"/>
+        </ui:template>
+      </ui:table.Column>
+      <ui:table.Column sortProperty="TITLE">
+        <Label text="Title"/>
+        <ui:template>
+          <Text text="{results>TITLE}" wrapping="false"/>
+        </ui:template>
+      </ui:table.Column>
+      <ui:table.Column sortProperty="RANK" width="10%">
+        <Label text="Rank"/>
+        <ui:template>
+          <Text text="{results>RANK}" wrapping="false"/>
+        </ui:template>
+      </ui:table.Column>
+      <ui:table.Column sortProperty="results>SCORE" width="10%">
+        <Label text="Score"/>
+        <ui:template>
+          <Text text="{path : 'results>SCORE', formatter : '.formatter.formatPercent'}" wrapping="false"/>
+        </ui:template>
+      </ui:table.Column>
+      <ui:table.Column width="15%">
+        <Label text="Links"/>
+        <ui:template>
+          <HBox>
+            <Link text="IMDb" class="sapUiTinyMarginBeginEnd" target="_blank" href="http://www.imdb.com/title/tt{results>IMDBID}"/>
+            <Link text="TMDb" class="sapUiTinyMarginBeginEnd" target="_blank" href="https://www.themoviedb.org/movie/{results>TMDBID}"/>
+          </HBox>
+        </ui:template>
+      </ui:table.Column>
+    </ui:columns>
+  </ui:table.Table>
+</core:FragmentDefinition>

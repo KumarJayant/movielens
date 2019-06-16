@@ -1,0 +1,40 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:ui="sap.ui"
+  xmlns:custom="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+  <ScrollContainer height="100%" width="100%" horizontal="true" vertical="true" focusable="true">
+    <Panel expandable="false" expanded="true" headerText="Parameters">
+      <ui:layout.form.Form editable="true">
+        <ui:layout>
+          <ui:layout.form.ResponsiveGridLayout columnsL="1" columnsM="1"/>
+        </ui:layout>
+        <ui:formContainers>
+          <ui:layout.form.FormContainer>
+            <ui:formElements>
+              <ui:layout.form.FormElement label="User Id">
+                <ui:fields>
+                  <Input id="user_input" required="true" width="100%" showSuggestion="true" suggest="onSuggestionSuggest"
+                    value="{config>/services/pal_apriori/results/data/USERID}" custom:type="user" placeholder="Enter a user identifier..."
+                    suggestionItems="{ path: 'odata>/ratings_user', filters: [ { path: 'USERID', operator: 'EQ', value1: '-1' } ]}">
+                    <suggestionItems>
+                      <core:ListItem key="{odata>USERID}" text="{odata>USERID}" additionalText="Rating count : {odata>RATING_COUNT}"/>
+                    </suggestionItems>
+                  </Input>
+                </ui:fields>
+              </ui:layout.form.FormElement>
+              <ui:layout.form.FormElement label="Top N Results">
+                <ui:fields>
+                  <Slider progress="true" value="{config>/services/pal_apriori/results/data/KEEPTOPN}" step="1" min="5" max="20" enableTickmarks="true"
+                    inputsAsTooltips="true"/>
+                  <Input type="Number" value="{config>/services/pal_apriori/results/data/KEEPTOPN}" enabled="false"/>
+                </ui:fields>
+              </ui:layout.form.FormElement>
+            </ui:formElements>
+          </ui:layout.form.FormContainer>
+        </ui:formContainers>
+      </ui:layout.form.Form>
+      <Button text="Get Results" press="onPress" custom:method="results" custom:algorithm="pal_apriori" custom:resultType="collaborative"/>
+    </Panel>
+    <Panel expandable="false" visible="{= !!${results>/hasResult} &amp;&amp; ${results>/resultType} === 'collaborative'}" headerText="Results">
+      <ui:core.Fragment fragmentName="movielens.html.fragment.xsjs.result_collaborative" type="XML"/>
+    </Panel>
+  </ScrollContainer>
+</core:FragmentDefinition>
